@@ -1,0 +1,84 @@
+struct hashFunc
+{
+    unsigned int operator()(const vector<int> &x)
+    {
+        int total = 1; 
+        for (int i = 0; i < x.size(); i++)
+        {
+            total*=x[i];
+        }
+        if (total<0)
+        {
+            return -total;
+        }
+        else
+        {
+            return total;
+        }
+    }
+};
+struct compFunc
+{
+    bool operator()(const vector<int> & a, const vector<int> & b)
+    {
+        if (a.size() != b.size())
+        {
+            return false;
+        }
+        else
+        {
+            for (int i = 0; i < a.size(); i++)
+            {
+                if (a[i] != b[i])
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
+};
+class Solution {
+    vector<vector<int> > answer;
+    unordered_set<vector<int>, hashFunc, compFunc> existed;
+    void dfs(vector<int> combo, int n, int k)
+    {
+        if (k == 0)
+        {
+            if (existed.find(combo) == existed.end())
+            {
+                answer.push_back(combo);
+                existed.insert(combo);
+            }
+        }
+        else
+        {
+            for (int i = 1; i <= n; i++)
+            {
+                bool isFound = false;
+                for (int j = 0; j < combo.size(); j++)
+                {
+                    if (combo[j] == i)
+                    {
+                        isFound = true;
+                        break;
+                    }
+                }
+                if (isFound)
+                {
+                    continue;
+                }
+                else
+                {
+                    
+                }
+            }
+        }
+    }
+public:
+    vector<vector<int> > combine(int n, int k) {
+        answer.clear();
+        vector<int> v;
+        dfs(v, n, k);
+    }
+};
