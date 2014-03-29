@@ -1,0 +1,62 @@
+import java.util.ArrayList;
+import java.util.HashMap;
+
+
+public class Solution {
+	public static void main(String[] args)
+	{
+		ArrayList<Integer> result = Solve("barfooskxfoobarsos", new String[]{"foo", "bar"});
+		for (int I : result) {
+			System.out.println(result.get(I));
+		}
+	}
+	public static ArrayList<Integer> Solve(String S, String[] T) {
+		HashMap<String, Integer> patternStrMap = new HashMap<String, Integer>();
+		ArrayList<Integer> freq = new ArrayList<Integer>();
+		ArrayList<Integer> answer = new ArrayList<Integer>();
+		int totalUniqueWords = 0;
+		int patternStrLength = 0;
+		if (S.length() == 0) {
+			return null;
+		}
+		if (T.length == 0) {
+			return null;
+		}
+		patternStrLength = T[0].length();
+		// Map all the pattern strings to integer
+		for (int i = 0; i < T.length; i++) {
+			if (patternStrMap.containsKey(T[i])) {
+				int pos = patternStrMap.get(T[i]);
+				freq.set(pos, freq.get(pos) + 1);
+			}
+			else {
+				totalUniqueWords++;
+				freq.add(1);
+				patternStrMap.put(T[i],totalUniqueWords);
+			}
+		}
+		// Start from each point in the string
+		ArrayList<Integer> currFreq = new ArrayList<Integer>();
+		for (int i = 0; i < freq.size(); i++) {
+			currFreq.add(0);
+		}
+		for (int i = 0; i < S.length(); i++) {
+			int j = 0;
+			for (j = 1; j <= T.length; j++) {
+				String substr = S.substring(i + patternStrLength * (j - 1), i + patternStrLength * j);
+				if (patternStrMap.containsKey(substr)) {
+					int pos = patternStrMap.get(substr);
+					if (currFreq.get(pos) > freq.get(pos)) {
+						break;
+					}
+				}
+				else break;
+			}
+			if (j > T.length) {
+				answer.add(i);
+			}
+		}
+		return answer;
+		}
+	}
+

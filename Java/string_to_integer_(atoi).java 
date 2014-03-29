@@ -1,0 +1,49 @@
+public class Solution {
+    public int convertToInteger(String num, boolean sign) {
+        long converted = 0; 
+        for (int i = 0; i < num.length(); i++) {
+            converted *= 10;
+            converted += (num.charAt(i) - '0');
+            if (sign && converted > Integer.MAX_VALUE) {
+                return Integer.MAX_VALUE;
+            } else if (!sign && converted >= (long)Integer.MAX_VALUE + 1) {
+                return Integer.MIN_VALUE;
+            }
+        }
+        if (sign) {
+            return (int)converted;
+        } else {
+            return (int)-converted;
+        }
+    }
+    public int atoi(String str) {
+        boolean positiveSign = true;
+        if (str.length() == 0) return 0;
+        String strWithoutWhiteSpace = str.trim();
+        if (strWithoutWhiteSpace.length() == 0) return 0;
+        else {
+            int startIndex = 0;
+            if (strWithoutWhiteSpace.charAt(startIndex) == '+') {
+                positiveSign = true;
+                startIndex++;
+            } else if (strWithoutWhiteSpace.charAt(startIndex) == '-') {
+                positiveSign = false;
+                startIndex++;
+            }
+            int endIndex = startIndex;
+            while(endIndex < strWithoutWhiteSpace.length()) {
+                if (strWithoutWhiteSpace.charAt(endIndex) <= '9' && strWithoutWhiteSpace.charAt(endIndex) >= '0') {
+                    endIndex++;
+                }
+                else {
+                    break;
+                }
+            }
+            if (endIndex > startIndex) {
+                return convertToInteger(strWithoutWhiteSpace.substring(startIndex, endIndex), positiveSign);
+            } else {
+                return 0;
+            }
+        }
+    }
+}
